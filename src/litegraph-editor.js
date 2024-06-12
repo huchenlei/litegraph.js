@@ -1,8 +1,8 @@
-//Creates an interface to access extra features from a graph (like play, stop, live, etc)
+// Creates an interface to access extra features from a graph (like play, stop, live, etc)
 function Editor(container_id, options) {
     options = options || {};
 
-    //fill container
+    // fill container
     var html = "<div class='header'><div class='tools tools-left'></div><div class='tools tools-right'></div></div>";
     html += "<div class='content'><div class='editor-area'><canvas class='graphcanvas' width='1000' height='500' tabindex=10></canvas></div></div>";
     html += "<div class='footer'><div class='tools tools-left'></div><div class='tools tools-right'></div></div>";
@@ -18,7 +18,7 @@ function Editor(container_id, options) {
 
     var canvas = this.canvas = root.querySelector(".graphcanvas");
 
-    //create graph
+    // create graph
     var graph = (this.graph = new LGraph());
     var graphcanvas = this.graphcanvas = new LGraphCanvas(canvas, graph);
     graphcanvas.background_image = "imgs/grid.png";
@@ -26,25 +26,25 @@ function Editor(container_id, options) {
         graphcanvas.draw(true);
     };
 
-	graphcanvas.onDropItem = this.onDropItem.bind(this);
+    graphcanvas.onDropItem = this.onDropItem.bind(this);
 
-    //add stuff
-    //this.addToolsButton("loadsession_button","Load","imgs/icon-load.png", this.onLoadButton.bind(this), ".tools-left" );
-    //this.addToolsButton("savesession_button","Save","imgs/icon-save.png", this.onSaveButton.bind(this), ".tools-left" );
+    // add stuff
+    // this.addToolsButton("loadsession_button","Load","imgs/icon-load.png", this.onLoadButton.bind(this), ".tools-left" );
+    // this.addToolsButton("savesession_button","Save","imgs/icon-save.png", this.onSaveButton.bind(this), ".tools-left" );
     this.addLoadCounter();
     this.addToolsButton(
         "playnode_button",
         "Play",
         "imgs/icon-play.png",
         this.onPlayButton.bind(this),
-        ".tools-right"
+        ".tools-right",
     );
     this.addToolsButton(
         "playstepnode_button",
         "Step",
         "imgs/icon-playstep.png",
         this.onPlayStepButton.bind(this),
-        ".tools-right"
+        ".tools-right",
     );
 
     if (!options.skip_livemode) {
@@ -53,7 +53,7 @@ function Editor(container_id, options) {
             "Live",
             "imgs/icon-record.png",
             this.onLiveButton.bind(this),
-            ".tools-right"
+            ".tools-right",
         );
     }
     if (!options.skip_maximize) {
@@ -62,21 +62,21 @@ function Editor(container_id, options) {
             "",
             "imgs/icon-maximize.png",
             this.onFullscreenButton.bind(this),
-            ".tools-right"
+            ".tools-right",
         );
     }
     if (options.miniwindow) {
         this.addMiniWindow(300, 200);
     }
 
-    //append to DOM
+    // append to DOM
     var parent = document.getElementById(container_id);
     if (parent) {
         parent.appendChild(root);
     }
 
     graphcanvas.resize();
-    //graphcanvas.draw(true,true);
+    // graphcanvas.draw(true,true);
 }
 
 Editor.prototype.addLoadCounter = function() {
@@ -119,16 +119,16 @@ Editor.prototype.createButton = function(name, icon_url, callback) {
     if (icon_url) {
         button.innerHTML = "<img src='" + icon_url + "'/> ";
     }
-	button.classList.add("btn");
+    button.classList.add("btn");
     button.innerHTML += name;
-	if(callback)
-		button.addEventListener("click", callback );
+    if(callback)
+        button.addEventListener("click", callback );
     return button;
 };
 
 Editor.prototype.onLoadButton = function() {
-    var panel = this.graphcanvas.createPanel("Load session",{closable:true});
-	//TO DO
+    var panel = this.graphcanvas.createPanel("Load session",{closable: true});
+    // TO DO
 
     this.root.appendChild(panel);
 };
@@ -167,23 +167,20 @@ Editor.prototype.onLiveButton = function() {
         : "<img src='imgs/icon-gear.png'/> Edit";
 };
 
-Editor.prototype.onDropItem = function(e)
-{
-	var that = this;
-	for(var i = 0; i < e.dataTransfer.files.length; ++i)
-	{
-		var file = e.dataTransfer.files[i];
-		var ext = LGraphCanvas.getFileExtension(file.name);
-		var reader = new FileReader();
-		if(ext == "json")
-		{
-			reader.onload = function(event) {
-				var data = JSON.parse( event.target.result );
-				that.graph.configure(data);
-			};
-			reader.readAsText(file);
-		}
-	}
+Editor.prototype.onDropItem = function(e) {
+    var that = this;
+    for(var i = 0; i < e.dataTransfer.files.length; ++i) {
+        var file = e.dataTransfer.files[i];
+        var ext = LGraphCanvas.getFileExtension(file.name);
+        var reader = new FileReader();
+        if(ext == "json") {
+            reader.onload = function(event) {
+                var data = JSON.parse( event.target.result );
+                that.graph.configure(data);
+            };
+            reader.readAsText(file);
+        }
+    }
 }
 
 Editor.prototype.goFullscreen = function() {
@@ -238,7 +235,7 @@ Editor.prototype.addMiniWindow = function(w, h) {
         var tl = that.graphcanvas.convertOffsetToCanvas([0, 0]);
         var br = that.graphcanvas.convertOffsetToCanvas([
             that.graphcanvas.canvas.width,
-            that.graphcanvas.canvas.height
+            that.graphcanvas.canvas.height,
         ]);
         tl = this.convertCanvasToOffset(tl);
         br = this.convertCanvasToOffset(br);
@@ -247,7 +244,7 @@ Editor.prototype.addMiniWindow = function(w, h) {
             Math.floor(tl[0]) + 0.5,
             Math.floor(tl[1]) + 0.5,
             Math.floor(br[0] - tl[0]),
-            Math.floor(br[1] - tl[1])
+            Math.floor(br[1] - tl[1]),
         );
     };
 
@@ -267,17 +264,16 @@ Editor.prototype.addMiniWindow = function(w, h) {
     this.root.querySelector(".content").appendChild(miniwindow);
 };
 
-Editor.prototype.addMultiview = function()
-{
-	var canvas = this.canvas;
-	this.graphcanvas.ctx.fillStyle = "black";
-	this.graphcanvas.ctx.fillRect(0,0,canvas.width,canvas.height);
-	this.graphcanvas.viewport = [0,0,canvas.width*0.5-2,canvas.height];
+Editor.prototype.addMultiview = function() {
+    var canvas = this.canvas;
+    this.graphcanvas.ctx.fillStyle = "black";
+    this.graphcanvas.ctx.fillRect(0,0,canvas.width,canvas.height);
+    this.graphcanvas.viewport = [0,0,canvas.width*0.5-2,canvas.height];
 
-	var graphcanvas = new LGraphCanvas( canvas, this.graph );
+    var graphcanvas = new LGraphCanvas( canvas, this.graph );
     graphcanvas.background_image = "imgs/grid.png";
     this.graphcanvas2 = graphcanvas;
-	this.graphcanvas2.viewport = [canvas.width*0.5,0,canvas.width*0.5,canvas.height];
+    this.graphcanvas2.viewport = [canvas.width*0.5,0,canvas.width*0.5,canvas.height];
 }
 
 LiteGraph.Editor = Editor;
