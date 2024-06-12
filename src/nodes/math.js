@@ -710,7 +710,7 @@
         var B = this.getInputData(1);
         if ( A != null ) {
             if( A.constructor === Number )
-	            this.properties["A"] = A;
+                this.properties["A"] = A;
         } else {
             A = this.properties["A"];
         }
@@ -725,7 +725,7 @@
 
         var result;
         if(A.constructor === Number) {
-	        result = 0;
+            result = 0;
             result = func(A,B);
         } else if(A.constructor === Array) {
             result = this._result;
@@ -737,7 +737,7 @@
             for(var i in A)
                 result[i] = func(A[i],B);
         }
-	    this.setOutputData(0, result);
+        this.setOutputData(0, result);
     };
 
     MathOperation.prototype.onDrawBackground = function(ctx) {

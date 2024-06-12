@@ -38,11 +38,11 @@
             changed = false;
         var must_resend = (changed && this.properties.only_on_change) || (!changed && !this.properties.only_on_change);
         if(v && must_resend )
-	        this.triggerSlot(0, param, null, options);
+            this.triggerSlot(0, param, null, options);
         if(!v && must_resend)
-	        this.triggerSlot(2, param, null, options);
+            this.triggerSlot(2, param, null, options);
         if(changed)
-	        this.triggerSlot(1, param, null, options);
+            this.triggerSlot(1, param, null, options);
         this.prev = v;
     };
 
@@ -58,8 +58,8 @@
         this.addOutput("", LiteGraph.EVENT);
         this.addOutput("", LiteGraph.EVENT);
         this.addWidget("button","+",null,function() {
-	        that.addInput("", LiteGraph.ACTION);
-	        that.addOutput("", LiteGraph.EVENT);
+            that.addInput("", LiteGraph.ACTION);
+            that.addOutput("", LiteGraph.EVENT);
         });
         this.size = [90, 70];
         this.flags = { horizontal: true, render_box: false };
@@ -79,7 +79,7 @@
                 var output = this.outputs[i];
                 // needs more info about this...
                 if( options.action_call ) // CREATE A NEW ID FOR THE ACTION
-	                options.action_call = options.action_call + "_seq_" + i;
+                    options.action_call = options.action_call + "_seq_" + i;
                 else
                     options.action_call = this.id + "_" + (action ? action : "action")+"_seq_"+i+"_"+Math.floor(Math.random()*9999);
                 this.triggerSlot(i, param, null, options);
@@ -156,7 +156,7 @@
         this.addOutput("", LiteGraph.EVENT);
         this.addOutput("", LiteGraph.EVENT,{removable: true});
         this.addWidget("button","+",null,function() {
-	        that.addOutput("", LiteGraph.EVENT, {removable: true});
+            that.addOutput("", LiteGraph.EVENT, {removable: true});
         });
         this.size = [120, 120];
         this.flags = { render_box: false };
@@ -187,7 +187,7 @@
             index = clamp( index, 0, this.outputs ? (this.outputs.length - 2) : 0 );
             if( index != this.properties.index ) {
                 this.properties.index = index;
-			    this.triggerSlot( index+1 );
+                this.triggerSlot( index+1 );
             }
         }
 

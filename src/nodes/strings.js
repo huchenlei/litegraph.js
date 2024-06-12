@@ -75,14 +75,14 @@
         if(separator == null)
             separator = this.properties.separator;
         if (str == null )
-	        return [];
+            return [];
         if( str.constructor === String )
             return str.split(separator || " ");
         else if( str.constructor === Array ) {
             var r = [];
             for(var i = 0; i < str.length; ++i) {
                 if (typeof str[i] == "string")
-				    r[i] = str[i].split(separator || " ");
+                    r[i] = str[i].split(separator || " ");
             }
             return r;
         }

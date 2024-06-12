@@ -1127,7 +1127,9 @@ LiteGraph.registerNodeType("audio/waveShaper", LGAudioWaveShaper);
             this.audionode.started = true;
             try {
                 this.audionode.start();
-            } catch (err) {}
+            } catch (err) {
+                console.error(err);
+            }
         }
     };
 
@@ -1319,9 +1321,7 @@ LiteGraph.registerNodeType("audio/waveShaper", LGAudioWaveShaper);
         var ctx = LGAudio.getAudioContext();
         if (ctx.createScriptProcessor) {
             this.audionode = ctx.createScriptProcessor(4096, 1, 1);
-        }
-        // buffer size, input channels, output channels
-        else {
+        } else { // buffer size, input channels, output channels
             console.warn("ScriptProcessorNode deprecated");
             this.audionode = ctx.createGain(); // bypass audio
         }

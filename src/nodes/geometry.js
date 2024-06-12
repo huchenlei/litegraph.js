@@ -12,8 +12,7 @@
         u_model: model_matrix,
     };
 
-    LiteGraph.LGraphRender = {onRequestCameraMatrices: null, // overwrite with your 3D engine specifics, it will receive (view_matrix, projection_matrix,viewprojection_matrix) and must be filled
-    };
+    LiteGraph.LGraphRender = {onRequestCameraMatrices: null }; // overwrite with your 3D engine specifics, it will receive (view_matrix, projection_matrix,viewprojection_matrix) and must be filled
 
     function generateGeometryId() {
         return (Math.random() * 100000)|0;
@@ -180,8 +179,7 @@
                         normals.set(UP, i);
                 }
             }
-        } else // non regular
-        {
+        } else { // non regular
             if( mode == LGraphPoints3D.RECTANGLE) {
                 for(var i = 0; i < size; i+=3) {
                     points[i] = (Math.random() - 0.5) * radius * 2;
@@ -420,8 +418,7 @@
         var temp = vec3.create();
         var i = 0;
         var tries = 0;
-        while(i < size && tries < points.length * 10) // limit to avoid problems
-        {
+        while(i < size && tries < points.length * 10) { // limit to avoid problems
             tries += 1
             var r = vec3.random(temp); // random point inside the aabb
             r[0] = (r[0] * 2 - 1) * aabb[3] + aabb[0];
@@ -743,11 +740,6 @@
             vertices[i*3] = x;
             vertices[i*3+1] = y;
             vertices[i*3+2] = z;
-
-            if(gen_uvs) {
-
-
-            }
         }
         this.geometry._id = ++this.geometry_id;
         this.geometry._version = ++this.version;
@@ -807,8 +799,7 @@
             for(var i = 0, l = vertices.length; i < l; i += 3) {
                 tempA[0] = vertices[i]; tempA[1] = vertices[i+1]; tempA[2] = vertices[i+2];
 
-                if( i+3 < l ) // loop
-                {
+                if( i+3 < l ) { // loop
                     tempB[0] = vertices[i+3]; tempB[1] = vertices[i+4]; tempB[2] = vertices[i+5];
                 } else {
                     tempB[0] = vertices[0]; tempB[1] = vertices[1]; tempB[2] = vertices[2];

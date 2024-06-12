@@ -242,15 +242,14 @@
                         this._last_sent_data[i].length = data.length;
                         for(var j = 0; j < data.length; ++j)
                             this._last_sent_data[i][j] = data[j];
-                    } else // create
-                    {
+                    } else { // create
                         if(data.constructor === Array)
                             this._last_sent_data[i] = data.concat();
                         else
                             this._last_sent_data[i] = new data.constructor( data );
                     }
                 } else
-	                this._last_sent_data[i] = data; // should be cloned
+                    this._last_sent_data[i] = data; // should be cloned
             }
         }
 
@@ -302,8 +301,7 @@
                 } else {
                     that.triggerSlot(0, data.data);
                 }
-            } // for FLOW slots
-            else {
+            } else {
                 that._last_received_data[data.channel || 0] = data.data;
             }
             that.boxcolor = "#AFA";
@@ -355,7 +353,6 @@
 
     // HTTP Request
     function HTTPRequestNode() {
-        var that = this;
         this.addInput("request", LiteGraph.ACTION);
         this.addInput("url", "string");
         this.addProperty("url", "");

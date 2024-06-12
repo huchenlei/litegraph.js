@@ -20,13 +20,13 @@
     LiteGraph.slot_types_default_out["array"] = ["basic/watch","basic/set_array","basic/array[]"];
     LiteGraph.slot_types_default_out["boolean"] = ["logic/IF","basic/watch","math/branch","math/gate"];
     LiteGraph.slot_types_default_out["number"] = ["basic/watch",
-												  {node: "math/operation",properties: {OP: "*"},title: "A*B"},
-												  {node: "math/operation",properties: {OP: "/"},title: "A/B"},
-												  {node: "math/operation",properties: {OP: "+"},title: "A+B"},
-												  {node: "math/operation",properties: {OP: "-"},title: "A-B"},
-												  {node: "math/compare",outputs: [["A==B", "boolean"]],title: "A==B"},
-												  {node: "math/compare",outputs: [["A>B", "boolean"]],title: "A>B"},
-												  {node: "math/compare",outputs: [["A<B", "boolean"]],title: "A<B"},
+        {node: "math/operation",properties: {OP: "*"},title: "A*B"},
+        {node: "math/operation",properties: {OP: "/"},title: "A/B"},
+        {node: "math/operation",properties: {OP: "+"},title: "A+B"},
+        {node: "math/operation",properties: {OP: "-"},title: "A-B"},
+        {node: "math/compare",outputs: [["A==B", "boolean"]],title: "A==B"},
+        {node: "math/compare",outputs: [["A>B", "boolean"]],title: "A>B"},
+        {node: "math/compare",outputs: [["A<B", "boolean"]],title: "A<B"},
     ];
     LiteGraph.slot_types_default_out["object"] = ["basic/object_property","basic/keys",["string/toString","basic/watch"]];
     LiteGraph.slot_types_default_out["string"] = ["basic/watch","string/compare","string/concatenate","string/contains"];

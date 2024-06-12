@@ -105,7 +105,7 @@
         if(!node_ctor.prototype.onPropertyChanged)
             node_ctor.prototype.onPropertyChanged = function() {
                 if(this.graph)
-					 this.graph._version++;
+                    this.graph._version++;
             }
 
         /*
@@ -194,19 +194,17 @@
                 throw("unknown type for glsl value: " + v.constructor);
         }
         switch(type) {
-            case 'float': return v.toFixed(n); break;
-            case 'vec2': return "vec2(" + v[0].toFixed(n) + "," + v[1].toFixed(n) + ")"; break;
+            case 'float': return v.toFixed(n);
+            case 'vec2': return "vec2(" + v[0].toFixed(n) + "," + v[1].toFixed(n) + ")";
             case 'color3':
-            case 'vec3': return "vec3(" + v[0].toFixed(n) + "," + v[1].toFixed(n) + "," + v[2].toFixed(n) + ")"; break;
+            case 'vec3': return "vec3(" + v[0].toFixed(n) + "," + v[1].toFixed(n) + "," + v[2].toFixed(n) + ")";
             case 'color4':
-            case 'vec4': return "vec4(" + v[0].toFixed(n) + "," + v[1].toFixed(n) + "," + v[2].toFixed(n) + "," + v[3].toFixed(n) + ")"; break;
-            case 'mat3': return "mat3(1.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,1.0)"; break; // not fully supported yet
-            case 'mat4': return "mat4(1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0)"; break;// not fully supported yet
+            case 'vec4': return "vec4(" + v[0].toFixed(n) + "," + v[1].toFixed(n) + "," + v[2].toFixed(n) + "," + v[3].toFixed(n) + ")";
+            case 'mat3': return "mat3(1.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,1.0)"; // not fully supported yet
+            case 'mat4': return "mat4(1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0)"; // not fully supported yet
             default:
                 throw("unknown glsl type in valueToGLSL:", type);
         }
-
-        return "";
     }
 
     // makes sure that a var is of a type, and if not, it converts it
@@ -232,10 +230,8 @@
                 case "vec3":
                 case "vec4":
                     return v + ".x";
-                    break;
                 default: // null
                     return "0.0";
-                    break;
             }
         } else if(output_type == "vec2") {
             switch(input_type) {
@@ -284,8 +280,7 @@
             return target_type + "(" + varname + ")";
         if(target_type == "vec2") // works for vec2,vec3 and vec4
             return "vec2(" + varname + ".xy)";
-        if(target_type == "vec3") // works for vec2,vec3 and vec4
-        {
+        if(target_type == "vec3") { // works for vec2,vec3 and vec4
             if(type == "vec2")
                 return "vec3(" + varname + ",0.0)";
             if(type == "vec4")
@@ -436,8 +431,6 @@
             this._shader_error = true;
             return null;
         }
-
-        return null;// never here
     }
 
     LGShaderContext.prototype.getShader = function( graph ) {
@@ -956,7 +949,7 @@ gl_FragColor = fragcolor;\n\
 
     LGraphShaderVec2.prototype.onPropertyChanged = function() {
         if(this.graph)
-			 this.graph._version++;
+            this.graph._version++;
     }
 
     LGraphShaderVec2.prototype.onGetCode = function( context ) {
@@ -1208,8 +1201,7 @@ gl_FragColor = fragcolor;\n\
         var params = [];
         for(var i = 0; i < 2; ++i) {
             var param_code = inlinks[i].name;
-            if(param_code == null) // not plugged
-            {
+            if(param_code == null) { // not plugged
                 param_code = p.value != null ? p.value : "(1.0)";
                 inlinks[i].type = "float";
             }
@@ -1302,8 +1294,7 @@ gl_FragColor = fragcolor;\n\
         for(var i = 0; i < func_desc.params.length; ++i) {
             var p = func_desc.params[i];
             var param_code = inlinks[i].name;
-            if(param_code == null) // not plugged
-            {
+            if(param_code == null) { // not plugged
                 param_code = p.value != null ? p.value : "(1.0)";
                 inlinks[i].type = "float";
             }

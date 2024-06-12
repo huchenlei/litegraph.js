@@ -105,7 +105,6 @@
                 break;
             case LGraphTexture.REUSE:
                 return origin;
-                break;
             case LGraphTexture.COPY:
             default:
                 tex_type = origin ? origin.type : gl.UNSIGNED_BYTE;
@@ -376,7 +375,7 @@
     // used to replace shader code
     LGraphTexture.replaceCode = function( code, context ) {
         return code.replace(/\{\{[a-zA-Z0-9_]*\}\}/g, function(v) {
-            v = v.replace( /[\{\}]/g, "" );
+            v = v.replace( /[{}]/g, "" );
             return context[v] || "";
         });
     }
@@ -1127,9 +1126,9 @@ void main() {\n\
         if (!tex && !this._tex) {
             this._tex = new GL.Texture(width, height, {
                 type:
-					this.precision === LGraphTexture.LOW
-					    ? gl.UNSIGNED_BYTE
-					    : gl.HIGH_PRECISION_FORMAT,
+                    this.precision === LGraphTexture.LOW
+                        ? gl.UNSIGNED_BYTE
+                        : gl.HIGH_PRECISION_FORMAT,
                 format: gl.RGBA,
                 filter: gl.LINEAR,
             });
@@ -2596,9 +2595,9 @@ void main() {\n\
             texA.height,
         );
         var type =
-			this.properties.precision == LGraphTexture.HIGH
-			    ? LGraphTexture.HIGH_PRECISION_FORMAT
-			    : gl.UNSIGNED_BYTE;
+            this.properties.precision == LGraphTexture.HIGH
+                ? LGraphTexture.HIGH_PRECISION_FORMAT
+                : gl.UNSIGNED_BYTE;
 
         if (
             !this._texture ||
@@ -2690,9 +2689,9 @@ void main() {\n\
 
     LGraphTextureColor.prototype.onExecute = function() {
         var type =
-			this.properties.precision == LGraphTexture.HIGH
-			    ? LGraphTexture.HIGH_PRECISION_FORMAT
-			    : gl.UNSIGNED_BYTE;
+            this.properties.precision == LGraphTexture.HIGH
+                ? LGraphTexture.HIGH_PRECISION_FORMAT
+                : gl.UNSIGNED_BYTE;
 
         if (!this._tex || this._tex.type != type) {
             this._tex = new GL.Texture(1, 1, {
@@ -4563,8 +4562,7 @@ void main(void){\n\
         var tex = this.getInputData(0);
 
         var temp = this._temp_texture;
-        if(!tex) // generate one texture, nothing else
-        {
+        if(!tex) { // generate one texture, nothing else
             if(this._must_update || !this._curve_texture )
                 this.updateCurve();
             this.setOutputData(0, this._curve_texture);
@@ -5263,8 +5261,7 @@ void main(void){\n\
                 }
                 gl.finish2D();
             });
-        else // rendering to offscreen canvas and uploading to texture
-        {
+        else { // rendering to offscreen canvas and uploading to texture
             if(properties.clear)
                 ctx.clearRect(0,0,canvas.width,canvas.height);
 

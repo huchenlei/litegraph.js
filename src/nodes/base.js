@@ -532,7 +532,7 @@
 
         // update output
         if(this.outputs[0].type != type) {
-	        if (!LiteGraph.isValidConnection(this.outputs[0].type,type))
+            if (!LiteGraph.isValidConnection(this.outputs[0].type,type))
                 this.disconnectOutput(0);
             this.outputs[0].type = type;
         }
@@ -577,7 +577,6 @@
             this.name_in_graph = v;
         } else if( name == "type" ) {
             this.updateType();
-        } else if( name == "value" ) {
         }
     }
 
@@ -692,7 +691,6 @@
             this.name_in_graph = v;
         } else if (name == "type") {
             this.updateType();
-        } else if (name == "value") {
         }
     }
 
@@ -705,7 +703,7 @@
         if (this.inputs[0].type != type) {
 
             if ( type == "action" || type == "event")
-	            type = LiteGraph.EVENT;
+                type = LiteGraph.EVENT;
             if (!LiteGraph.isValidConnection(this.inputs[0].type, type))
                 this.disconnectInput(0);
             this.inputs[0].type = type;
@@ -902,7 +900,7 @@
         fetch(url)
             .then(function(response) {
                 if(!response.ok)
-				 throw new Error("File not found");
+                    throw new Error("File not found");
 
                 if(that.properties.type == "arraybuffer")
                     return response.arrayBuffer();
@@ -1046,9 +1044,9 @@
 
         try {
             if(value[0] != "[")
-	            this._value = JSON.parse("[" + value + "]");
+                this._value = JSON.parse("[" + value + "]");
             else
-	            this._value = JSON.parse(value);
+                this._value = JSON.parse(value);
             this.boxcolor = "#AEA";
         } catch (err) {
             this.boxcolor = "red";
@@ -1057,8 +1055,7 @@
 
     ConstantArray.prototype.onExecute = function() {
         var v = this.getInputData(0);
-        if(v && v.length) // clone
-        {
+        if(v && v.length) { // clone
             if(!this._value)
                 this._value = new Array();
             this._value.length = v.length;
@@ -1144,9 +1141,9 @@
             return;
         var row = table[Math.floor(Number(row))];
         if(row)
-	        this.setOutputData(0, row[Math.floor(Number(col))] );
+            this.setOutputData(0, row[Math.floor(Number(col))] );
         else
-	        this.setOutputData(0, null );
+            this.setOutputData(0, null );
     };
 
     LiteGraph.registerNodeType("basic/table[][]", TableElement);
@@ -1301,14 +1298,11 @@
                 if(this.graph)
                     return this.graph.vars;
                 return {};
-                break;
             case Variable.GLOBALSCOPE:
                 return global;
-                break;
             case Variable.LITEGRAPH:
             default:
                 return LiteGraph.Globals;
-                break;
         }
     }
 

@@ -13,8 +13,11 @@ export default [
         "@stylistic":stylistic
     },
     "rules": {
+        "no-inner-declarations":0,
+        "no-prototype-builtins":0,
+        "no-redeclare":0,
         "no-undef":0, /* had to disable because it doesn't recognize DOM objects */
-        "no-unused-vars":[1,
+        "no-unused-vars":[0,
             {
               "argsIgnorePattern": "^_",
               "varsIgnorePattern": "^_",
