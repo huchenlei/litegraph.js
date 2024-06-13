@@ -83,6 +83,17 @@ function Editor(container_id, options) {
         );
     }
 
+    graph.onPlayEvent = (function() {
+        const button = this.root.querySelector("#playnode_button");
+        button.innerHTML = `<img src="imgs/icon-stop.png"/> Stop`;
+    }).bind(this);
+
+    graph.onStopEvent = (function() {
+        const button = this.root.querySelector("#playnode_button");
+        button.innerHTML = `<img src="imgs/icon-play.png"/> Play`;
+    }).bind(this);
+
+
     // append to DOM
     var parent = document.getElementById(container_id);
     if (parent) {
