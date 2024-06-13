@@ -10,7 +10,7 @@
         "build": "python3 build.py",
         "docs": "jsdoc -c ./docs/.jsdoc.config -d ./docs -r --verbose --debug",
         "server": "nodemon server.js --watch ./src",
-        "test": "node --experimental-vm-modules node_modules/jest-cli/bin/jest.js",
+        "test": "jest",
         "lint": "npx eslint src",
         "lint:fix": "npx eslint --fix src"
     },
