@@ -7,16 +7,32 @@ import re
 # Define the lists of JS files to concatenate
 js_files_lists = [
     {
-        "output_filename": "litegraph.js",
+        "output_filename": "litegraph.core.js",
+        "pack_filename": "litegraph.core.pack.js",
+        "js_files": [    
+            "./src/litegraph.js",
+        ]
+    },
+    {
+        "output_filename": "litegraph.mini.js",
+        "pack_filename": "litegraph.mini.pack.js",
+        "js_files": [    
+            "./src/litegraph.js",
+            
+            "./src/nodes/base.js",
+            "./src/nodes/events.js",
+            "./src/nodes/input.js",
+            "./src/nodes/math.js",
+            "./src/nodes/strings.js",
+            "./src/nodes/logic.js",
+            "./src/nodes/network.js",
+        ]
+    },
+    {
+        "output_filename": "litegraph.full.js",
+        "pack_filename": "litegraph.full.pack.js",
         "js_files": [
            "./src/litegraph.js",
-           "./src/contextmenu.js",
-           "./src/lgraphcanvas.js",
-           "./src/dragandscale.js",
-           "./src/lgraphnode.js",
-           "./src/lgraphgroup.js",
-           "./src/lgraph.js",
-           "./src/llink.js",
            
             "./src/nodes/base.js",
             "./src/nodes/events.js",
@@ -36,40 +52,6 @@ js_files_lists = [
             "./src/nodes/network.js",
         ]
     },
-    {
-        "output_filename": "litegraph.mini.js",
-        "js_files": [    
-            "./src/litegraph.js",
-           "./src/contextmenu.js",
-           "./src/lgraphcanvas.js",
-           "./src/dragandscale.js",
-           "./src/lgraphnode.js",
-           "./src/lgraphgroup.js",
-           "./src/lgraph.js",
-           "./src/llink.js",
-            
-            "./src/nodes/base.js",
-            "./src/nodes/events.js",
-            "./src/nodes/input.js",
-            "./src/nodes/math.js",
-            "./src/nodes/strings.js",
-            "./src/nodes/logic.js",
-            "./src/nodes/network.js",
-        ]
-    },
-    {
-        "output_filename": "litegraph.core.js",
-        "js_files": [    
-            "./src/litegraph.js",
-           "./src/contextmenu.js",
-           "./src/lgraphcanvas.js",
-           "./src/dragandscale.js",
-           "./src/lgraphnode.js",
-           "./src/lgraphgroup.js",
-           "./src/lgraph.js",
-           "./src/llink.js",
-        ]
-    }
 ]
 
 # Specify the build folder
@@ -167,7 +149,8 @@ if not os.path.exists(build_folder):
 
 # Concatenate JS files from each list and save to the respective output filenames
 for js_files_list in js_files_lists:
-    pack_js_files(js_files_list["js_files"], js_files_list["output_filename"])
+    concatenate_js_files(js_files_list["js_files"], js_files_list["output_filename"])
+    pack_js_files(js_files_list["js_files"], js_files_list["pack_filename"])
 
 files_to_update = ["src/litegraph.js", "package.json"]
 
