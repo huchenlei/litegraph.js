@@ -276,7 +276,7 @@
 .litegraph.litesearchbox .close {
     background-color: #000;
     color: #FFF;
-    font: 14px;
+    font: 14px sans-serif;
     margin-top: 6px;
     min-height: 1.5em;
     padding-left: 10px;
