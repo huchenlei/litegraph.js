@@ -198,6 +198,7 @@ Editor.prototype.onDropItem = function(e) {
     }
 }
 
+// only turns fullscreen on
 Editor.prototype.goFullscreen = function() {
     if (this.root.requestFullscreen) {
         this.root.requestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
@@ -215,8 +216,23 @@ Editor.prototype.goFullscreen = function() {
     }, 100);
 };
 
+// toggles fullscreen behavior
 Editor.prototype.onFullscreenButton = function() {
-    this.goFullscreen();
+    if(
+        document.fullscreenElement ||
+        document.mozRequestFullscreen ||
+        document.webkitRequestFullscreen
+    ) {
+        if(document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.mozCancelFullscreen) {
+            document.mozCancelFullscreen();
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        }
+    } else {
+        this.goFullscreen();
+    }
 };
 
 Editor.prototype.addMiniWindow = function(w, h) {
