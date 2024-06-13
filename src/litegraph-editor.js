@@ -2,15 +2,23 @@
 function Editor(container_id, options) {
     options = options || {};
 
-    // fill container
-    var html = "<div class='header'><div class='tools tools-left'></div><div class='tools tools-right'></div></div>";
-    html += "<div class='content'><div class='editor-area'><canvas class='graphcanvas' width='1000' height='500' tabindex=10></canvas></div></div>";
-    html += "<div class='footer'><div class='tools tools-left'></div><div class='tools tools-right'></div></div>";
-
     var root = document.createElement("div");
     this.root = root;
     root.className = "litegraph litegraph-editor";
-    root.innerHTML = html;
+    root.innerHTML = `
+    <div class="header">
+        <div class="tools tools-left"></div>
+        <div class="tools tools-right"></div>
+    </div>
+    <div class="content">
+        <div class="editor-area">
+            <canvas class="graphcanvas" width="1000" height="500" tabindex="10"></canvas>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="tools tools-left"></div>
+        <div class="tools tools-right"></div>
+    </div>`;
 
     this.tools = root.querySelector(".tools");
     this.content = root.querySelector(".content");
@@ -82,13 +90,20 @@ function Editor(container_id, options) {
 Editor.prototype.addLoadCounter = function() {
     var meter = document.createElement("div");
     meter.className = "headerpanel loadmeter toolbar-widget";
+    meter.innerHTML = `
+    <div class="cpuload">
+        <strong>CPU</strong> 
+        <div class="bgload">
+            <div class="fgload"></div>
+        </div>
+    </div>
+    <div class="gpuload">
+        <strong>GFX</strong> 
+        <div class="bgload">
+            <div class="fgload"></div>
+        </div>
+    </div>`;
 
-    var html =
-        "<div class='cpuload'><strong>CPU</strong> <div class='bgload'><div class='fgload'></div></div></div>";
-    html +=
-        "<div class='gpuload'><strong>GFX</strong> <div class='bgload'><div class='fgload'></div></div></div>";
-
-    meter.innerHTML = html;
     this.root.querySelector(".header .tools-left").appendChild(meter);
     var self = this;
 
