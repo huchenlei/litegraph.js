@@ -96,6 +96,7 @@ def update_version(version, command=""):
     if "--minor" in command:
         version_parts = version.split('.')
         version_parts[1] = str(int(version_parts[1]) + 1)
+        version_parts[2] = '0'
         version = '.'.join(version_parts)
     elif "--major" in command:
         version_parts = version.split('.')

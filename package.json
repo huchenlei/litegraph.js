@@ -1,6 +1,6 @@
 {
     "name": "@mr_pebble/litegraph",
-    "version": "0.11.3",
+    "version": "0.11.0",
     "description": "A flow graph node editor on the web.",
     "main": "build/litegraph.js",
     "type": "module",
@@ -8,6 +8,8 @@
     "private": false,
     "scripts": {
         "build": "python3 build.py",
+        "build:minor": "python3 build.py --minor",
+        "build:major": "python3 build.py --major",
         "docs": "jsdoc -c ./docs/.jsdoc.config -d ./docs -r --verbose --debug",
         "server": "nodemon server.js --watch ./src",
         "test": "jest",
