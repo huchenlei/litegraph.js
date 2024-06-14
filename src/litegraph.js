@@ -964,6 +964,17 @@
                 }
             }
         },
+
+        compareObjects: compareObjects,
+        distance: distance,
+        colorToString: colorToString,
+        isInsideRectangle: isInsideRectangle,
+        growBounding: growBounding,
+        isInsideBounding: isInsideBounding,
+        overlapBounding: overlapBounding,
+        hex2num: hex2num,
+        num2hex: num2hex,
+
     });
 
     // timer that works everywhere
@@ -13525,12 +13536,10 @@ LGraphNode.prototype.executeAction = function(action)
         }
         return true;
     }
-    LiteGraph.compareObjects = compareObjects;
 
     function distance(a, b) {
         return Math.sqrt((b[0] - a[0]) * (b[0] - a[0]) + (b[1] - a[1]) * (b[1] - a[1]));
     }
-    LiteGraph.distance = distance;
 
     function colorToString(c) {
         return (
@@ -13545,7 +13554,6 @@ LGraphNode.prototype.executeAction = function(action)
         ")"
         );
     }
-    LiteGraph.colorToString = colorToString;
 
     function isInsideRectangle(x, y, left, top, width, height) {
         if (left < x && left + width > x && top < y && top + height > y) {
@@ -13553,7 +13561,6 @@ LGraphNode.prototype.executeAction = function(action)
         }
         return false;
     }
-    LiteGraph.isInsideRectangle = isInsideRectangle;
 
     // [minx,miny,maxx,maxy]
     function growBounding(bounding, x, y) {
@@ -13569,7 +13576,6 @@ LGraphNode.prototype.executeAction = function(action)
             bounding[3] = y;
         }
     }
-    LiteGraph.growBounding = growBounding;
 
     // point inside bounding box
     function isInsideBounding(p, bb) {
@@ -13583,7 +13589,6 @@ LGraphNode.prototype.executeAction = function(action)
         }
         return true;
     }
-    LiteGraph.isInsideBounding = isInsideBounding;
 
     // bounding overlap, format: [ startx, starty, width, height ]
     function overlapBounding(a, b) {
@@ -13602,7 +13607,6 @@ LGraphNode.prototype.executeAction = function(action)
         }
         return true;
     }
-    LiteGraph.overlapBounding = overlapBounding;
 
     // Convert a hex value to its decimal value - the inputted hex must be in the
     //	format of a hex triplet - the kind we use for HTML colours. The function
@@ -13625,8 +13629,6 @@ LGraphNode.prototype.executeAction = function(action)
         return value;
     }
 
-    LiteGraph.hex2num = hex2num;
-
     // Give a array with three values as the argument and the function will return
     //	the corresponding hex triplet.
     function num2hex(triplet) {
@@ -13641,8 +13643,6 @@ LGraphNode.prototype.executeAction = function(action)
         }
         return hex;
     }
-
-    LiteGraph.num2hex = num2hex;
 
     /* LiteGraph GUI elements used for canvas editing *************************************/
 
