@@ -902,17 +902,17 @@
 
         closeAllContextMenus: function(ref_window) {
             ref_window = ref_window || window;
-    
+
             var elements = ref_window.document.querySelectorAll(".litecontextmenu");
             if (!elements.length) {
                 return;
             }
-    
+
             var result = [];
             for (var i = 0; i < elements.length; i++) {
                 result.push(elements[i]);
             }
-    
+
             for (var i=0; i < result.length; i++) {
                 if (result[i].close) {
                     result[i].close();
@@ -921,7 +921,7 @@
                 }
             }
         },
-    
+
         extendClass: function(target, origin) {
             for (var i in origin) {
             // copy class properties
@@ -930,7 +930,7 @@
                 }
                 target[i] = origin[i];
             }
-    
+
             if (origin.prototype) {
             // copy prototype properties
                 for (var i in origin.prototype) {
@@ -938,12 +938,12 @@
                     if (!origin.prototype.hasOwnProperty(i)) {
                         continue;
                     }
-    
+
                     if (target.prototype.hasOwnProperty(i)) {
                     // avoid overwriting existing ones
                         continue;
                     }
-    
+
                     // copy getters
                     if (origin.prototype.__lookupGetter__(i)) {
                         target.prototype.__defineGetter__(
@@ -953,7 +953,7 @@
                     } else {
                         target.prototype[i] = origin.prototype[i];
                     }
-    
+
                     // and setters
                     if (origin.prototype.__lookupSetter__(i)) {
                         target.prototype.__defineSetter__(
