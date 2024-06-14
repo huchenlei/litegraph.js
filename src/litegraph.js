@@ -2524,15 +2524,16 @@
         onNodeTrace(node, msg, color) {
         // TODO
         }
-    }
 
+        static supported_types = ["number", "string", "boolean"];
+
+        static STATUS_STOPPED = 1;
+        static STATUS_RUNNING = 2;
+    }
     global.LGraph = LiteGraph.LGraph = LGraph;
 
     // default supported types
-    LGraph.supported_types = ["number", "string", "boolean"];
 
-    LGraph.STATUS_STOPPED = 1;
-    LGraph.STATUS_RUNNING = 2;
 
     // this is the class in charge of storing link information
     class LLink {
