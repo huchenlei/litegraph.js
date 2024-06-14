@@ -13478,54 +13478,48 @@ LGraphNode.prototype.executeAction = function(action)
             //	return v.callback.call(that, node, options, e, menu, that, event );
             }
         }
+
+        static DEFAULT_BACKGROUND_IMAGE = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAIAAAD/gAIDAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAQBJREFUeNrs1rEKwjAUhlETUkj3vP9rdmr1Ysammk2w5wdxuLgcMHyptfawuZX4pJSWZTnfnu/lnIe/jNNxHHGNn//HNbbv+4dr6V+11uF527arU7+u63qfa/bnmh8sWLBgwYJlqRf8MEptXPBXJXa37BSl3ixYsGDBMliwFLyCV/DeLIMFCxYsWLBMwSt4Be/NggXLYMGCBUvBK3iNruC9WbBgwYJlsGApeAWv4L1ZBgsWLFiwYJmCV/AK3psFC5bBggULloJX8BpdwXuzYMGCBctgwVLwCl7Be7MMFixYsGDBsu8FH1FaSmExVfAxBa/gvVmwYMGCZbBg/W4vAQYA5tRF9QYlv/QAAAAASUVORK5CYII=";
+
+        static link_type_colors = {
+            "-1": LiteGraph.EVENT_LINK_COLOR,
+            number: "#AAA",
+            node: "#DCA",
+        };
+
+        static gradients = {}; // cache of gradients
+
+        static search_limit = -1;
+
+        static node_colors = {
+            red: { color: "#322", bgcolor: "#533", groupcolor: "#A88" },
+            brown: { color: "#332922", bgcolor: "#593930", groupcolor: "#b06634" },
+            green: { color: "#232", bgcolor: "#353", groupcolor: "#8A8" },
+            blue: { color: "#223", bgcolor: "#335", groupcolor: "#88A" },
+            pale_blue: { color: "#2a363b", bgcolor: "#3f5159", groupcolor: "#3f789e" },
+            cyan: { color: "#233", bgcolor: "#355", groupcolor: "#8AA" },
+            purple: { color: "#323", bgcolor: "#535", groupcolor: "#a1309b" },
+            yellow: { color: "#432", bgcolor: "#653", groupcolor: "#b58b2a" },
+            black: { color: "#222", bgcolor: "#000", groupcolor: "#444" },
+        };
     }
-
     global.LGraphCanvas = LiteGraph.LGraphCanvas = LGraphCanvas;
-
-    LGraphCanvas.DEFAULT_BACKGROUND_IMAGE = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAIAAAD/gAIDAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAQBJREFUeNrs1rEKwjAUhlETUkj3vP9rdmr1Ysammk2w5wdxuLgcMHyptfawuZX4pJSWZTnfnu/lnIe/jNNxHHGNn//HNbbv+4dr6V+11uF527arU7+u63qfa/bnmh8sWLBgwYJlqRf8MEptXPBXJXa37BSl3ixYsGDBMliwFLyCV/DeLIMFCxYsWLBMwSt4Be/NggXLYMGCBUvBK3iNruC9WbBgwYJlsGApeAWv4L1ZBgsWLFiwYJmCV/AK3psFC5bBggULloJX8BpdwXuzYMGCBctgwVLwCl7Be7MMFixYsGDBsu8FH1FaSmExVfAxBa/gvVmwYMGCZbBg/W4vAQYA5tRF9QYlv/QAAAAASUVORK5CYII=";
-
-    LGraphCanvas.link_type_colors = {
-        "-1": LiteGraph.EVENT_LINK_COLOR,
-        number: "#AAA",
-        node: "#DCA",
-    };
-    LGraphCanvas.gradients = {}; // cache of gradients
 
     /* Interaction */
 
     /* LGraphCanvas render */
     var temp = new Float32Array(4);
-
     var temp_vec2 = new Float32Array(2);
 
     /**
- * draws the shape of the given node in the canvas
- * @method drawNodeShape
- **/
+     * draws the shape of the given node in the canvas
+     * @method drawNodeShape
+     **/
     var tmp_area = new Float32Array(4);
-
     var margin_area = new Float32Array(4);
     var link_bounding = new Float32Array(4);
     var tempA = new Float32Array(2);
     var tempB = new Float32Array(2);
-
-    LGraphCanvas.search_limit = -1;
-
-    LGraphCanvas.node_colors = {
-        red: { color: "#322", bgcolor: "#533", groupcolor: "#A88" },
-        brown: { color: "#332922", bgcolor: "#593930", groupcolor: "#b06634" },
-        green: { color: "#232", bgcolor: "#353", groupcolor: "#8A8" },
-        blue: { color: "#223", bgcolor: "#335", groupcolor: "#88A" },
-        pale_blue: {
-            color: "#2a363b",
-            bgcolor: "#3f5159",
-            groupcolor: "#3f789e",
-        },
-        cyan: { color: "#233", bgcolor: "#355", groupcolor: "#8AA" },
-        purple: { color: "#323", bgcolor: "#535", groupcolor: "#a1309b" },
-        yellow: { color: "#432", bgcolor: "#653", groupcolor: "#b58b2a" },
-        black: { color: "#222", bgcolor: "#000", groupcolor: "#444" },
-    };
 
     // API *************************************************
     function compareObjects(a, b) {
