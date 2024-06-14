@@ -153,7 +153,7 @@
     // For more information: https://github.com/jagenjo/SillyServer.js
 
     class LGSillyClient {
-        
+
         static title = "SillyClient";
         static desc = "Connects to SillyServer to broadcast messages";
 
@@ -357,7 +357,7 @@
 
     // HTTP Request
     class HTTPRequestNode {
-        
+
         static title = "HTTP Request";
         static desc = "Fetch data through HTTP";
 
