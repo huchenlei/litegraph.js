@@ -441,7 +441,7 @@
             this.boxcolor = "#AA4";
 
             function inner(buffer) {
-                this.boxcolor = LiteGraph.NODE_DEFAULT_BOXCOLOR;
+                that.boxcolor = LiteGraph.NODE_DEFAULT_BOXCOLOR;
                 that._audiobuffer = buffer;
                 that._loading_audio = false;
                 // if is playing, then play it
