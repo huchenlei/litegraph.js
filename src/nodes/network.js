@@ -183,7 +183,7 @@
             };
 
             this._server = null;
-            this.connectSocket();
+            // this.connectSocket();
             this._last_sent_data = [];
             this._last_received_data = [];
 
