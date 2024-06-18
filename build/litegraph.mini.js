@@ -14041,7 +14041,8 @@ LGraphNode.prototype.executeAction = function(action)
             }
         }
 
-        return function(...args) {
+        // @TODO: SHUNT HELPERS
+        const ContextMenu = function(...args) {
             // If 'new' was not used, instantiate the class manually
             if (!(this instanceof ContextMenuClass)) {
                 return new ContextMenuClass(...args);
@@ -14050,6 +14051,17 @@ LGraphNode.prototype.executeAction = function(action)
             // If 'new' was used, call the class constructor
             return new ContextMenuClass(...args);
         };
+
+        ContextMenu.prototype = ContextMenuClass.prototype;
+
+        // Copy static methods to the wrapper function
+        Object.getOwnPropertyNames(ContextMenuClass).forEach((key) => {
+            if (typeof ContextMenuClass[key] === 'function') {
+                ContextMenu[key] = ContextMenuClass[key];
+            }
+        });
+
+        return ContextMenu;
     })();
     // @TODO: </IIFE SHUNT WRAPPER TO HANDLE INCORRECT CONTEXTMENU USAGE>
     LiteGraph.ContextMenu = ContextMenu;

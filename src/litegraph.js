@@ -14060,6 +14060,8 @@ LGraphNode.prototype.executeAction = function(action)
                 ContextMenu[key] = ContextMenuClass[key];
             }
         });
+
+        return ContextMenu;
     })();
     // @TODO: </IIFE SHUNT WRAPPER TO HANDLE INCORRECT CONTEXTMENU USAGE>
     LiteGraph.ContextMenu = ContextMenu;
