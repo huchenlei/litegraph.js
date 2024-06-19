@@ -1,6 +1,6 @@
 {
     "name": "comfyui-litegraph",
-    "version": "0.11.7",
+    "version": "0.11.8",
     "description": "A flow graph node editor on the web.",
     "main": "build/litegraph.core.js",
     "type": "module",
