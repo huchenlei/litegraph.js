@@ -8,7 +8,7 @@ html,body {
 body {
 	background-color: #333;
 	color: #EEE;
-	font: 14px Tahoma, sans-serif;
+	font: 14px Tahoma;
 }
 
 #main {
@@ -17,7 +17,6 @@ body {
 	background-color: #222;
 }
 
-
 #status {
 	position: absolute;
 	top: 10px;
@@ -25,6 +24,8 @@ body {
 	color: #FAA;
 	font-size: 18px;
 	padding: 5px;
+	/*border-radius: 5px;*/
+	width: calc( 50% - 30px);
 	min-height: 30px;
 	overflow: hidden;
 	background-color: #644;
@@ -34,6 +35,7 @@ body {
 	padding: 2px;
 	font-size: 0.8em;
 	background-color: #464;
+	/*border-radius: 2px;*/
 }
 
 #content {
@@ -78,6 +80,7 @@ body {
 
 .item-list .item:hover {
 	background-color: #33A;
+	/*border-radius: 4px;*/
 	color: white;
 	padding-left: 15px;
 	transition: background-color 300ms, color 300ms, padding-left 300ms;
@@ -113,7 +116,7 @@ label {
 	/*border-radius: 4px;*/
 	padding: 2px;
 	/*box-shadow: inset 0 0 3px #333; */
-	font-family: Verdana, sans-serif;
+	font-family: Verdana;
 	width: 250px;
 }
 
@@ -236,5 +239,7 @@ textarea {
 }
 
 .graphcanvas{
+	/*touch-action: manipulation; WONT WORK*/
+	/*touch-action: none; DESIDERABLE: implement zoom and pan*/
 	touch-action: pinch-zoom;
 }

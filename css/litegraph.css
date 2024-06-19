@@ -276,7 +276,7 @@
 .litegraph.litesearchbox .close {
     background-color: #000;
     color: #FFF;
-    font: 14px;
+    font: 14px sans-serif;
     margin-top: 6px;
     min-height: 1.5em;
     padding-left: 10px;
@@ -643,25 +643,25 @@
     color: black;
 }
 
-.litegraph .dialog {
+.litegraph.dialog {
     min-height: 0;
 }
-.litegraph .dialog .dialog-content {
+.litegraph.dialog .dialog-content {
     display: block;
 }
-.litegraph .dialog .dialog-content .subgraph_property {
+.litegraph.dialog .dialog-content .subgraph_property {
     padding: 5px;
 }
-.litegraph .dialog .dialog-footer {
+.litegraph.dialog .dialog-footer {
     margin: 0;
 }
-.litegraph .dialog .dialog-footer .subgraph_property {
+.litegraph.dialog .dialog-footer .subgraph_property {
     margin-top: 0;
     display: flex;
     align-items: center;
     padding: 5px;
 }
-.litegraph .dialog .dialog-footer .subgraph_property .name {
+.litegraph.dialog .dialog-footer .subgraph_property .name {
     flex: 1;
 }
 .litegraph .graphdialog {

@@ -1,12 +1,10 @@
-import { LGraphCanvas } from "./lgraphcanvas.js";
-import { LGraph } from "./lgraph.js";
-
 // Creates an interface to access extra features from a graph (like play, stop, live, etc)
-export class Editor {
+class Editor {
+    constructor(container_id, options) {
+        options = options || {};
 
-    constructor(container_id, options = {}) {
-
-        const root = this.root = document.createElement("div");
+        var root = document.createElement("div");
+        this.root = root;
         root.className = "litegraph litegraph-editor";
         root.innerHTML = `
         <div class="header">
@@ -27,12 +25,13 @@ export class Editor {
         this.content = root.querySelector(".content");
         this.footer = root.querySelector(".footer");
 
-        const canvas = this.canvas = root.querySelector(".graphcanvas");
-        const graph = this.graph = new LGraph();
-        const graphcanvas = this.graphcanvas = new LGraphCanvas(canvas, graph);
+        var canvas = this.canvas = root.querySelector(".graphcanvas");
 
+        // create graph
+        var graph = (this.graph = new LGraph());
+        var graphcanvas = this.graphcanvas = new LGraphCanvas(canvas, graph);
         graphcanvas.background_image = "imgs/grid.png";
-        graph.onAfterExecute = () => {
+        graph.onAfterExecute = function() {
             graphcanvas.draw(true);
         };
 
@@ -76,72 +75,80 @@ export class Editor {
             );
         }
         if (options.miniwindow) {
-            this.addMiniWindow(300, 200);
+            this.addToolsButton(
+                "miniwin_button",
+                "",
+                "imgs/icon-edit.png",
+                this.addMiniWindow.bind(this, 300, 200),
+                ".tools-right",
+            );
         }
 
-        // append to DOM
-        const parent = document.getElementById(container_id);
-        if (parent) {
-            parent?.appendChild(root);
-        } else {
-            throw new Error("Editor has no parentElement to bind to");
-        }
-
-        graph.onPlayEvent = () => {
+        graph.onPlayEvent = (function() {
             const button = this.root.querySelector("#playnode_button");
             button.innerHTML = `<img src="imgs/icon-stop.png"/> Stop`;
-        };
+        }).bind(this);
 
-        graph.onStopEvent = () => {
+        graph.onStopEvent = (function() {
             const button = this.root.querySelector("#playnode_button");
             button.innerHTML = `<img src="imgs/icon-play.png"/> Play`;
-        };
+        }).bind(this);
+
+
+        // append to DOM
+        var parent = document.getElementById(container_id);
+        if (parent) {
+            parent.appendChild(root);
+        }
 
         graphcanvas.resize();
+        // graphcanvas.draw(true,true);
     }
 
     addLoadCounter() {
-        const meter = document.createElement("div");
+        var meter = document.createElement("div");
         meter.className = "headerpanel loadmeter toolbar-widget";
         meter.innerHTML = `
-            <div class="cpuload">
-                <strong>CPU</strong> 
-                <div class="bgload">
-                    <div class="fgload"></div>
-                </div>
+        <div class="cpuload">
+            <strong>CPU</strong> 
+            <div class="bgload">
+                <div class="fgload"></div>
             </div>
-            <div class="gpuload">
-                <strong>GFX</strong> 
-                <div class="bgload">
-                    <div class="fgload"></div>
-                </div>
-            </div>`;
+        </div>
+        <div class="gpuload">
+            <strong>GFX</strong> 
+            <div class="bgload">
+                <div class="fgload"></div>
+            </div>
+        </div>`;
 
         this.root.querySelector(".header .tools-left").appendChild(meter);
         var self = this;
 
-        setInterval(() => {
-            meter.querySelector(".cpuload .fgload").style.width =
-                `${2 * self.graph.execution_time * 90}px`;
+        setInterval(function() {
+            meter.querySelector(".cpuload .fgload").style.width = ((2 * self.graph.execution_time * 90)||0) + "px";
             if (self.graph.status == LGraph.STATUS_RUNNING) {
-                meter.querySelector(".gpuload .fgload").style.width =
-                    `${self.graphcanvas.render_time * 10 * 90}px`;
+                meter.querySelector(".gpuload .fgload").style.width = ((self.graphcanvas.render_time * 10 * 90)||0) + "px";
             } else {
-                meter.querySelector(".gpuload .fgload").style.width = `${4}px`;
+                meter.querySelector(".gpuload .fgload").style.width = `4px`;
             }
         }, 200);
     }
 
-    addToolsButton(id, name, icon_url, callback, container = ".tools") {
-        const button = this.createButton(name, icon_url, callback);
+    addToolsButton(id, name, icon_url, callback, container) {
+        if (!container) {
+            container = ".tools";
+        }
+
+        var button = this.createButton(name, icon_url, callback);
         button.id = id;
         this.root.querySelector(container).appendChild(button);
     }
 
     createButton(name, icon_url, callback) {
-        const button = document.createElement("button");
+        var button = document.createElement("button");
         if (icon_url) {
-            button.innerHTML = `<img src="${icon_url}"/> `;
+            button.innerHTML = "<img src='" + icon_url + "'/> ";
         }
         button.classList.add("btn");
         button.innerHTML += name;
@@ -152,8 +159,7 @@ export class Editor {
 
     onLoadButton() {
         var panel = this.graphcanvas.createPanel("Load session",{closable: true});
-
-        // @TODO
+        // TO DO
 
         this.root.appendChild(panel);
     }
@@ -162,9 +168,13 @@ export class Editor {
 
     onPlayButton() {
         var graph = this.graph;
+        var button = this.root.querySelector("#playnode_button");
+
         if (graph.status == LGraph.STATUS_STOPPED) {
+            button.innerHTML = "<img src='imgs/icon-stop.png'/> Stop";
             graph.start();
         } else {
+            button.innerHTML = "<img src='imgs/icon-play.png'/> Play";
             graph.stop();
         }
     }
@@ -179,10 +189,13 @@ export class Editor {
         var is_live_mode = !this.graphcanvas.live_mode;
         this.graphcanvas.switchLiveMode(true);
         this.graphcanvas.draw();
+        var url = this.graphcanvas.live_mode
+            ? "imgs/gauss_bg_medium.jpg"
+            : "imgs/gauss_bg.jpg";
         var button = this.root.querySelector("#livemode_button");
         button.innerHTML = !is_live_mode
-            ? `<img src="imgs/icon-record.png"/> Live`
-            : `<img src="imgs/icon-gear.png"/> Edit`;
+            ? "<img src='imgs/icon-record.png'/> Live"
+            : "<img src='imgs/icon-gear.png'/> Edit";
     }
 
     onDropItem(e) {
@@ -192,7 +205,7 @@ export class Editor {
             var ext = LGraphCanvas.getFileExtension(file.name);
             var reader = new FileReader();
             if(ext == "json") {
-                reader.onload = (event) => {
+                reader.onload = function(event) {
                     var data = JSON.parse( event.target.result );
                     that.graph.configure(data);
                 };
@@ -201,6 +214,7 @@ export class Editor {
         }
     }
 
+    // only turns fullscreen on
     goFullscreen() {
         if (this.root.requestFullscreen) {
             this.root.requestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
@@ -209,18 +223,29 @@ export class Editor {
         } else if (this.root.webkitRequestFullscreen) {
             this.root.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
         } else {
-            throw new Error("Fullscreen not supported");
+            throw "Fullscreen not supported";
         }
 
         var self = this;
-        setTimeout(() => {
+        setTimeout(function() {
             self.graphcanvas.resize();
         }, 100);
     }
 
+    // toggles fullscreen behavior
     onFullscreenButton() {
-        if(this.isFullscreen()) {
-            this.exitFullscreen();
+        if(
+            document.fullscreenElement ||
+            document.mozRequestFullscreen ||
+            document.webkitRequestFullscreen
+        ) {
+            if(document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.mozCancelFullscreen) {
+                document.mozCancelFullscreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            }
         } else {
             this.goFullscreen();
         }
@@ -229,22 +254,23 @@ export class Editor {
     addMiniWindow(w, h) {
         var miniwindow = document.createElement("div");
         miniwindow.className = "litegraph miniwindow";
-        miniwindow.innerHTML =
-            `<canvas class="graphcanvas" width="${w}" height="${h}" tabindex="10"></canvas>`;
+        miniwindow.innerHTML = `
+            <canvas class="graphcanvas" width="${w}" height="${h}" tabindex="10"></canvas>"
+        `;
         var canvas = miniwindow.querySelector("canvas");
         var that = this;
 
         var graphcanvas = new LGraphCanvas( canvas, this.graph );
         graphcanvas.show_info = false;
         graphcanvas.background_image = "imgs/grid.png";
-        graphcanvas.scale = 0.25;
+        graphcanvas.scale = 0.03;
         graphcanvas.allow_dragnodes = false;
         graphcanvas.allow_interaction = false;
         graphcanvas.render_shadows = false;
-        graphcanvas.max_zoom = 0.25;
+        graphcanvas.max_zoom = 0.03;
         this.miniwindow_graphcanvas = graphcanvas;
-        graphcanvas.onClear = () => {
-            graphcanvas.scale = 0.25;
+        graphcanvas.onClear = function() {
+            graphcanvas.scale = 0.03;
             graphcanvas.allow_dragnodes = false;
             graphcanvas.allow_interaction = false;
         };
@@ -273,7 +299,7 @@ export class Editor {
         var close_button = document.createElement("div");
         close_button.className = "corner-button";
         close_button.innerHTML = "&#10060;";
-        close_button.addEventListener("click", (_event) => {
+        close_button.addEventListener("click", function(e) {
             graphcanvas.setGraph(null);
             miniwindow.parentNode.removeChild(miniwindow);
         });
@@ -282,11 +308,15 @@ export class Editor {
         this.root.querySelector(".content").appendChild(miniwindow);
     }
 
+    // We're hijacking this method, it's now a *toggle* Multiview
     addMultiview() {
         var canvas = this.canvas;
-        let graphcanvas;
+        var graphcanvas;
 
+        // Already multiview, we're actually toggling it
         if (this.graphcanvas2) {
+
+            // @BUG: A bug in this section of code is triggered when you *play* the graph
             this.graphcanvas2.setGraph(null, true);
             this.graphcanvas2.viewport = null;
             this.graphcanvas2 = null;
@@ -309,23 +339,5 @@ export class Editor {
         this.graphcanvas2 = graphcanvas;
         this.graphcanvas2.viewport = [canvas.width*0.5,0,canvas.width*0.5,canvas.height];
     }
-
-    isFullscreen() {
-        return(
-            document.fullscreenElement ||
-            document.mozRequestFullscreen ||
-            document.webkitRequestFullscreen ||
-            false
-        );
-    }
-
-    exitFullscreen() {
-        if(document.exitFullscreen) {
-            document.exitFullscreen();
-        } else if (document.mozCancelFullscreen) {
-            document.mozCancelFullscreen();
-        } else if (document.webkitExitFullscreen) {
-            document.webkitExitFullscreen();
-        }
-    }
 }
+LiteGraph.Editor = Editor;

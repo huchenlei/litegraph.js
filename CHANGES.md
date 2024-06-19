@@ -40,8 +40,11 @@ This fork takes the 2011-2014 code for LiteGraph and renews it.
 * Removed LiteGraph.pointerevents_method
 * All mouse events are now *pointer* events
 
-# For 0.10.x/master
+# For 0.10.x
 
-## Breaking
+Integrated Atlasan's fork (admittedly imperfectly) and realized we need to separate a 1.x pathway
+and a 2.x pathway.  This one is loaded with features that will ultimately belong in 2.x
 
-* Integrated Atlasan's fork
+# For 0.11.x/master
+
+At present, I believe 0.11.x presents no breaking changes from Javi's repo

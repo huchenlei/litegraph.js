@@ -7,16 +7,32 @@ import re
 # Define the lists of JS files to concatenate
 js_files_lists = [
     {
-        "output_filename": "litegraph.js",
+        "output_filename": "litegraph.core.js",
+        "pack_filename": "litegraph.core.pack.js",
+        "js_files": [    
+            "./src/litegraph.js",
+        ]
+    },
+    {
+        "output_filename": "litegraph.mini.js",
+        "pack_filename": "litegraph.mini.pack.js",
+        "js_files": [    
+            "./src/litegraph.js",
+            
+            "./src/nodes/base.js",
+            "./src/nodes/events.js",
+            "./src/nodes/input.js",
+            "./src/nodes/math.js",
+            "./src/nodes/strings.js",
+            "./src/nodes/logic.js",
+            "./src/nodes/network.js",
+        ]
+    },
+    {
+        "output_filename": "litegraph.full.js",
+        "pack_filename": "litegraph.full.pack.js",
         "js_files": [
            "./src/litegraph.js",
-           "./src/contextmenu.js",
-           "./src/lgraphcanvas.js",
-           "./src/dragandscale.js",
-           "./src/lgraphnode.js",
-           "./src/lgraphgroup.js",
-           "./src/lgraph.js",
-           "./src/llink.js",
            
             "./src/nodes/base.js",
             "./src/nodes/events.js",
@@ -36,40 +52,6 @@ js_files_lists = [
             "./src/nodes/network.js",
         ]
     },
-    {
-        "output_filename": "litegraph.mini.js",
-        "js_files": [    
-            "./src/litegraph.js",
-           "./src/contextmenu.js",
-           "./src/lgraphcanvas.js",
-           "./src/dragandscale.js",
-           "./src/lgraphnode.js",
-           "./src/lgraphgroup.js",
-           "./src/lgraph.js",
-           "./src/llink.js",
-            
-            "./src/nodes/base.js",
-            "./src/nodes/events.js",
-            "./src/nodes/input.js",
-            "./src/nodes/math.js",
-            "./src/nodes/strings.js",
-            "./src/nodes/logic.js",
-            "./src/nodes/network.js",
-        ]
-    },
-    {
-        "output_filename": "litegraph.core.js",
-        "js_files": [    
-            "./src/litegraph.js",
-           "./src/contextmenu.js",
-           "./src/lgraphcanvas.js",
-           "./src/dragandscale.js",
-           "./src/lgraphnode.js",
-           "./src/lgraphgroup.js",
-           "./src/lgraph.js",
-           "./src/llink.js",
-        ]
-    }
 ]
 
 # Specify the build folder
@@ -93,13 +75,13 @@ def concatenate_js_files(js_files, output_filename):
 
 def pack_js_files(js_files, output_filename):
     concatenated_data = "/*packed*/"
-    
+    uglifyjs_path = os.path.join(".", "node_modules", ".bin", "uglifyjs" + (".cmd" if sys.platform.startswith('win') else ""))
     for js_file in js_files:
         print("Processing " + js_file + " ", end="")
         
         if os.path.exists(js_file):
             # Minify the JS file using uglifyjs
-            minified_js = subprocess.run(["uglifyjs", js_file, "-c"], stdout=subprocess.PIPE, text=True)
+            minified_js = subprocess.run([uglifyjs_path, js_file, "-c"], stdout=subprocess.PIPE, text=True)
             concatenated_data += minified_js.stdout + "\n"
             print("\033[92mMinified\033[0m")
         else:
@@ -114,6 +96,7 @@ def update_version(version, command=""):
     if "--minor" in command:
         version_parts = version.split('.')
         version_parts[1] = str(int(version_parts[1]) + 1)
+        version_parts[2] = '0'
         version = '.'.join(version_parts)
     elif "--major" in command:
         version_parts = version.split('.')
@@ -167,7 +150,8 @@ if not os.path.exists(build_folder):
 
 # Concatenate JS files from each list and save to the respective output filenames
 for js_files_list in js_files_lists:
-    pack_js_files(js_files_list["js_files"], js_files_list["output_filename"])
+    concatenate_js_files(js_files_list["js_files"], js_files_list["output_filename"])
+    pack_js_files(js_files_list["js_files"], js_files_list["pack_filename"])
 
 files_to_update = ["src/litegraph.js", "package.json"]
 
