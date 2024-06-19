@@ -147,6 +147,8 @@ export type ContextMenuEventListener = (
 ) => boolean | void;
 
 export const LiteGraph: {
+    uuid: Symbol;
+
     DEFAULT_GROUP_FONT_SIZE: any;
     overlapBounding(visible_area: any, _bounding: any): unknown;
     release_link_on_empty_shows_menu: boolean;

@@ -12,6 +12,8 @@
  */
 
     var LiteGraph = (global.LiteGraph = {
+        uuid: Symbol("LiteGraph UUID"),
+
         VERSION: 0.4,
 
         CANVAS_GRID_SIZE: 10,
