@@ -2,7 +2,7 @@
     "name": "@mr_pebble/litegraph",
     "version": "0.11.4",
     "description": "A flow graph node editor on the web.",
-    "main": "build/litegraph.js",
+    "main": "build/litegraph.core.js",
     "type": "module",
     "types": "src/litegraph.d.ts",
     "private": false,
