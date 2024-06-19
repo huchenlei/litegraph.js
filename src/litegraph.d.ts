@@ -1096,6 +1096,8 @@ export declare class LGraphCanvas {
 
     pointer_is_down?: boolean;
 
+    /** Set background image and background color */
+    updateBackground(image: string, clearBackgroundColor: string): void;
     /** clears all the data inside */
     clear(): void;
     /** assigns a graph, you can reassign graphs to the same canvas */
