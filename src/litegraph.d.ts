@@ -961,7 +961,7 @@ export declare class LGraphCanvas {
     );
 
     static active_canvas: HTMLCanvasElement;
-                           
+
     allow_dragcanvas: boolean;
     allow_dragnodes: boolean;
     /** allow to control widgets, buttons, collapse, etc */
