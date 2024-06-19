@@ -52,6 +52,9 @@ export type WidgetCallback<T extends IWidget = IWidget> = (
 ) => void;
 
 export interface IWidget<TValue = any, TOptions = any> {
+    // linked widgets, e.g. seed+seedControl
+	linkedWidgets: IWidget[];
+
     name: string | null;
     value: TValue;
     options?: TOptions;
@@ -143,193 +146,6 @@ export type ContextMenuEventListener = (
     node: LGraphNode
 ) => boolean | void;
 
-export const LiteGraph: {
-    VERSION: number;
-
-    CANVAS_GRID_SIZE: number;
-
-    NODE_TITLE_HEIGHT: number;
-    NODE_TITLE_TEXT_Y: number;
-    NODE_SLOT_HEIGHT: number;
-    NODE_WIDGET_HEIGHT: number;
-    NODE_WIDTH: number;
-    NODE_MIN_WIDTH: number;
-    NODE_COLLAPSED_RADIUS: number;
-    NODE_COLLAPSED_WIDTH: number;
-    NODE_TITLE_COLOR: string;
-    NODE_TEXT_SIZE: number;
-    NODE_TEXT_COLOR: string;
-    NODE_SUBTEXT_SIZE: number;
-    NODE_DEFAULT_COLOR: string;
-    NODE_DEFAULT_BGCOLOR: string;
-    NODE_DEFAULT_BOXCOLOR: string;
-    NODE_DEFAULT_SHAPE: string;
-    DEFAULT_SHADOW_COLOR: string;
-    DEFAULT_GROUP_FONT: number;
-
-    LINK_COLOR: string;
-    EVENT_LINK_COLOR: string;
-    CONNECTING_LINK_COLOR: string;
-
-    MAX_NUMBER_OF_NODES: number; //avoid infinite loops
-    DEFAULT_POSITION: Vector2; //default node position
-    VALID_SHAPES: ["default", "box", "round", "card"]; //,"circle"
-
-    //shapes are used for nodes but also for slots
-    BOX_SHAPE: 1;
-    ROUND_SHAPE: 2;
-    CIRCLE_SHAPE: 3;
-    CARD_SHAPE: 4;
-    ARROW_SHAPE: 5;
-    SQUARE_SHAPE: 6;
-
-    //enums
-    INPUT: 1;
-    OUTPUT: 2;
-
-    EVENT: -1; //for outputs
-    ACTION: -1; //for inputs
-
-    ALWAYS: 0;
-    ON_EVENT: 1;
-    NEVER: 2;
-    ON_TRIGGER: 3;
-
-    UP: 1;
-    DOWN: 2;
-    LEFT: 3;
-    RIGHT: 4;
-    CENTER: 5;
-
-    STRAIGHT_LINK: 0;
-    LINEAR_LINK: 1;
-    SPLINE_LINK: 2;
-
-    NORMAL_TITLE: 0;
-    NO_TITLE: 1;
-    TRANSPARENT_TITLE: 2;
-    AUTOHIDE_TITLE: 3;
-
-    node_images_path: string;
-
-    debug: boolean;
-    catch_exceptions: boolean;
-    throw_errors: boolean;
-    /** if set to true some nodes like Formula would be allowed to evaluate code that comes from unsafe sources (like node configuration), which could lead to exploits */
-    allow_scripts: boolean;
-    /** node types by string */
-    registered_node_types: Record<string, LGraphNodeConstructor>;
-    /** used for dropping files in the canvas */
-    node_types_by_file_extension: Record<string, LGraphNodeConstructor>;
-    /** node types by class name */
-    Nodes: Record<string, LGraphNodeConstructor>;
-
-    /** used to add extra features to the search box */
-    searchbox_extras: Record<
-        string,
-        {
-            data: { outputs: string[][]; title: string };
-            desc: string;
-            type: string;
-        }
-    >;
-
-    createNode<T extends LGraphNode = LGraphNode>(type: string): T;
-    /** Register a node class so it can be listed when the user wants to create a new one */
-    registerNodeType(type: string, base: { new (): LGraphNode }): void;
-    /** removes a node type from the system */
-    unregisterNodeType(type: string): void;
-    /** Removes all previously registered node's types. */
-    clearRegisteredTypes(): void;
-    /**
-     * Create a new node type by passing a function, it wraps it with a proper class and generates inputs according to the parameters of the function.
-     * Useful to wrap simple methods that do not require properties, and that only process some input to generate an output.
-     * @param name node name with namespace (p.e.: 'math/sum')
-     * @param func
-     * @param param_types an array containing the type of every parameter, otherwise parameters will accept any type
-     * @param return_type string with the return type, otherwise it will be generic
-     * @param properties properties to be configurable
-     * @return {LGraphNode}
-     */
-    wrapFunctionAsNode(
-        name: string,
-        func: (...args: any[]) => any,
-        param_types?: string[],
-        return_type?: string,
-        properties?: object
-    ): LGraphNode;
-
-    /**
-     * Adds this method to all node types, existing and to be created
-     * (You can add it to LGraphNode.prototype but then existing node types wont have it)
-     */
-    addNodeMethod(name: string, func: (...args: any[]) => any): void;
-
-    /**
-     * Create a node of a given type with a name. The node is not attached to any graph yet.
-     * @param type full name of the node class. p.e. "math/sin"
-     * @param name a name to distinguish from other nodes
-     * @param options to set options
-     */
-    createNode<T extends LGraphNode>(
-        type: string,
-        title: string,
-        options: object
-    ): T;
-
-    /**
-     * Returns a registered node type with a given name
-     * @param type full name of the node class. p.e. "math/sin"
-     */
-    getNodeType<T extends LGraphNode>(type: string): LGraphNodeConstructor<T>;
-
-    /**
-     * Returns a list of node types matching one category
-     * @method getNodeTypesInCategory
-     * @param {String} category category name
-     * @param {String} filter only nodes with ctor.filter equal can be shown
-     * @return {Array} array with all the node classes
-     */
-    getNodeTypesInCategory(
-        category: string,
-        filter: string
-    ): LGraphNodeConstructor[];
-
-    /**
-     * Returns a list with all the node type categories
-     * @method getNodeTypesCategories
-     * @param {String} filter only nodes with ctor.filter equal can be shown
-     * @return {Array} array with all the names of the categories
-     */                           
-    getNodeTypesCategories(filter: string): string[];
-
-    /** debug purposes: reloads all the js scripts that matches a wildcard */
-    reloadNodes(folder_wildcard: string): void;
-
-    getTime(): number;
-    LLink: typeof LLink;
-    LGraph: typeof LGraph;
-    DragAndScale: typeof DragAndScale;
-    compareObjects(a: object, b: object): boolean;
-    distance(a: Vector2, b: Vector2): number;
-    colorToString(c: string): string;
-    isInsideRectangle(
-        x: number,
-        y: number,
-        left: number,
-        top: number,
-        width: number,
-        height: number
-    ): boolean;
-    growBounding(bounding: Vector4, x: number, y: number): Vector4;
-    isInsideBounding(p: Vector2, bb: Vector4): boolean;
-    hex2num(hex: string): [number, number, number];
-    num2hex(triplet: [number, number, number]): string;
-    ContextMenu: typeof ContextMenu;
-    extendClass<A, B>(target: A, origin: B): A & B;
-    getParameterNames(func: string): string[];
-};
-
 export type serializedLGraph<
     TNode = ReturnType<LGraphNode["serialize"]>,
     // https://github.com/jagenjo/litegraph.js/issues/74
@@ -349,6 +165,7 @@ export declare class LGraph {
     static supported_types: string[];
     static STATUS_STOPPED: 1;
     static STATUS_RUNNING: 2;
+	extra: any;
 
     constructor(o?: object);
 
@@ -408,7 +225,7 @@ export declare class LGraph {
      */
     updateExecutionOrder(): void;
     /** This is more internal, it computes the executable nodes in order and returns it */
-    computeExecutionOrder<T = any>(only_onExecute: boolean, set_level: any): T;
+    computeExecutionOrder<T = any>(only_onExecute: boolean, set_level?: any): T;
     /**
      * Returns all the nodes that could affect this one (ancestors) by crawling all the inputs recursively.
      * It doesn't include the node itself
@@ -536,7 +353,7 @@ export declare class LGraph {
     triggerInput(name: string, value: any): void;
     setCallback(name: string, func: (...args: any[]) => any): void;
     beforeChange(info?: LGraphNode): void;
-    afterChange(info?: LGraphNode): void;                       
+    afterChange(info?: LGraphNode): void;
     connectionChange(node: LGraphNode): void;
     /** returns if the graph is in live mode */
     isLive(): boolean;
@@ -544,7 +361,7 @@ export declare class LGraph {
     clearTriggeredSlots(): void;
     /* Called when something visually changed (not the graph!) */
     change(): void;
-    setDirtyCanvas(fg: boolean, bg: boolean): void;
+    setDirtyCanvas(fg: boolean, bg?: boolean): void;
     /** Destroys a link */
     removeLink(link_id: number): void;
     /** Creates a Object containing all the info about this graph, it can be serialized */
@@ -594,6 +411,11 @@ export type SerializedLGraphNode<T extends LGraphNode = LGraphNode> = {
 
 /** https://github.com/jagenjo/litegraph.js/blob/master/guides/README.md#lgraphnode */
 export declare class LGraphNode {
+	onResize?: Function;
+
+    // Used in group node
+	setInnerNodes(nodes: LGraphNode[]);
+
     static title_color: string;
     static title: string;
     static type: null | string;
@@ -643,6 +465,8 @@ export declare class LGraphNode {
         | typeof LiteGraph.ON_TRIGGER
         | typeof LiteGraph.NEVER
         | typeof LiteGraph.ALWAYS;
+
+    widgets: IWidget[];
 
     /** If set to true widgets do not start after the slots */
     widgets_up: boolean;
@@ -699,8 +523,6 @@ export declare class LGraphNode {
     getInputInfo(
         slot: number
     ): { link: number; name: string; type: string | 0 } | null;
-    /** Returns the link info in the connection of an input slot */
-    getInputLink(slot: number): LLink | null;
     /** returns the node connected in the input slot */
     getInputNode(slot: number): LGraphNode | null;
     /** returns the value of an input with this name, otherwise checks if there is a property with that name */
@@ -732,8 +554,6 @@ export declare class LGraphNode {
      * @param link_id in case you want to trigger and specific output link in a slot
      */
     clearTriggeredSlot(slot: number, link_id?: number): void;
-    /** changes node size and triggers callback */
-    setSize(size: Vector2): void;
     /**
      * add a new property to this node
      * @param name
@@ -806,10 +626,9 @@ export declare class LGraphNode {
         direction: string;
         links: null;
     };
-    /** computes the minimum size of a node according to its inputs and output slots */
-    computeSize(minHeight?: Vector2): Vector2;
-    /** returns all the info available about a property of this node */
-    getPropertyInfo(property: string): object;
+    setValue(v: any): void;
+    /** computes the size of a node according to its inputs and output slots */
+    computeSize(): [number, number];
     /**
      * https://github.com/jagenjo/litegraph.js/blob/master/guides/README.md#node-widgets
      * @return created widget
@@ -826,12 +645,9 @@ export declare class LGraphNode {
 
     /**
      * returns the bounding of the object, used for rendering purposes
-     * @method getBounding
-     * @param out [optional] a place to store the output, to free garbage
-     * @param compute_outer [optional] set to true to include the shadow and connection points in the bounding calculation
-     * @return the bounding box in format of [topleft_cornerx, topleft_cornery, width, height]
+     * @return [x, y, width, height]
      */
-    getBounding(out?: Vector4, compute_outer?: boolean): Vector4;
+    getBounding(): Vector4;
     /** checks if a point is inside the shape of a node */
     isPointInside(
         x: number,
@@ -1014,7 +830,7 @@ export declare class LGraphNode {
     onBeforeConnectInput?(
         inputIndex: number
     ): number;
-    
+
     /** a connection changed (new one or removed) (LiteGraph.INPUT or LiteGraph.OUTPUT, slot, true if connected, link_info, input_info or output_info ) */
     onConnectionsChange(
         type: number,
@@ -1022,7 +838,7 @@ export declare class LGraphNode {
         isConnected: boolean,
         link: LLink,
         ioSlot: (INodeOutputSlot | INodeInputSlot)
-    ): void;                           
+    ): void;
 
     /**
      * if returns false, will abort the `LGraphNode.setProperty`
@@ -1039,6 +855,7 @@ export declare class LGraphNode {
 }
 
 export type LGraphNodeConstructor<T extends LGraphNode = LGraphNode> = {
+	nodeData: any;  // Used by group node.
     new (): T;
 };
 
@@ -1144,7 +961,7 @@ export declare class LGraphCanvas {
     );
 
     static active_canvas: HTMLCanvasElement;
-                           
+
     allow_dragcanvas: boolean;
     allow_dragnodes: boolean;
     /** allow to control widgets, buttons, collapse, etc */
@@ -1211,6 +1028,8 @@ export declare class LGraphCanvas {
     node_over: LGraphNode | null;
     node_title_color: string;
     node_widget: [LGraphNode, IWidget] | null;
+    last_mouse_dragging: boolean;
+
     /** Called by `LGraphCanvas.drawBackCanvas` */
     onDrawBackground:
         | ((ctx: CanvasRenderingContext2D, visibleArea: Vector4) => void)
@@ -1270,6 +1089,12 @@ export declare class LGraphCanvas {
     visible_links: LLink[];
     visible_nodes: LGraphNode[];
     zoom_modify_alpha: boolean;
+    //mouse in canvas coordinates, where 0,0 is the top-left corner of the blue rectangle
+    mouse: Vector2;
+    //mouse in graph coordinates, where 0,0 is the top-left corner of the blue rectangle
+    graph_mouse: Vector2;
+
+    pointer_is_down?: boolean;
 
     /** clears all the data inside */
     clear(): void;
@@ -1496,4 +1321,211 @@ declare class ContextMenu {
     getFirstEvent(): void;
 }
 
-declare function clamp(v: number, min: number, max: number): number;
+declare global {
+    interface CanvasRenderingContext2D {
+        /** like rect but rounded corners */
+        roundRect(
+            x: number,
+            y: number,
+            width: number,
+            height: number,
+            radius: number | Vector4,
+            radiusLow?: number
+        ): void;
+    }
+
+    interface Math {
+        clamp(v: number, min: number, max: number): number;
+    }
+
+    const LiteGraph: {
+		DEFAULT_GROUP_FONT_SIZE: any;
+		overlapBounding(visible_area: any, _bounding: any): unknown;
+		release_link_on_empty_shows_menu: boolean;
+		alt_drag_do_clone_nodes: boolean;
+		GRID_SHAPE: number;
+        VERSION: number;
+
+        CANVAS_GRID_SIZE: number;
+
+        NODE_TITLE_HEIGHT: number;
+        NODE_TITLE_TEXT_Y: number;
+        NODE_SLOT_HEIGHT: number;
+        NODE_WIDGET_HEIGHT: number;
+        NODE_WIDTH: number;
+        NODE_MIN_WIDTH: number;
+        NODE_COLLAPSED_RADIUS: number;
+        NODE_COLLAPSED_WIDTH: number;
+        NODE_TITLE_COLOR: string;
+        NODE_TEXT_SIZE: number;
+        NODE_TEXT_COLOR: string;
+        NODE_SUBTEXT_SIZE: number;
+        NODE_DEFAULT_COLOR: string;
+        NODE_DEFAULT_BGCOLOR: string;
+        NODE_DEFAULT_BOXCOLOR: string;
+        NODE_DEFAULT_SHAPE: string;
+        DEFAULT_SHADOW_COLOR: string;
+        DEFAULT_GROUP_FONT: number;
+
+        LINK_COLOR: string;
+        EVENT_LINK_COLOR: string;
+        CONNECTING_LINK_COLOR: string;
+
+        MAX_NUMBER_OF_NODES: number; //avoid infinite loops
+        DEFAULT_POSITION: Vector2; //default node position
+        VALID_SHAPES: ["default", "box", "round", "card"]; //,"circle"
+
+        //shapes are used for nodes but also for slots
+        BOX_SHAPE: 1;
+        ROUND_SHAPE: 2;
+        CIRCLE_SHAPE: 3;
+        CARD_SHAPE: 4;
+        ARROW_SHAPE: 5;
+        SQUARE_SHAPE: 6;
+
+        //enums
+        INPUT: 1;
+        OUTPUT: 2;
+
+        EVENT: -1; //for outputs
+        ACTION: -1; //for inputs
+
+        ALWAYS: 0;
+        ON_EVENT: 1;
+        NEVER: 2;
+        ON_TRIGGER: 3;
+
+        UP: 1;
+        DOWN: 2;
+        LEFT: 3;
+        RIGHT: 4;
+        CENTER: 5;
+
+        STRAIGHT_LINK: 0;
+        LINEAR_LINK: 1;
+        SPLINE_LINK: 2;
+
+        NORMAL_TITLE: 0;
+        NO_TITLE: 1;
+        TRANSPARENT_TITLE: 2;
+        AUTOHIDE_TITLE: 3;
+
+        node_images_path: string;
+
+        debug: boolean;
+        catch_exceptions: boolean;
+        throw_errors: boolean;
+        /** if set to true some nodes like Formula would be allowed to evaluate code that comes from unsafe sources (like node configuration), which could lead to exploits */
+        allow_scripts: boolean;
+        /** node types by string */
+        registered_node_types: Record<string, LGraphNodeConstructor>;
+        /** used for dropping files in the canvas */
+        node_types_by_file_extension: Record<string, LGraphNodeConstructor>;
+        /** node types by class name */
+        Nodes: Record<string, LGraphNodeConstructor>;
+
+        /** used to add extra features to the search box */
+        searchbox_extras: Record<
+            string,
+            {
+                data: { outputs: string[][]; title: string };
+                desc: string;
+                type: string;
+            }
+        >;
+
+        createNode<T extends LGraphNode = LGraphNode>(type: string): T;
+        /** Register a node class so it can be listed when the user wants to create a new one */
+        registerNodeType(type: string, base: { new (): LGraphNode }): void;
+        /** removes a node type from the system */
+        unregisterNodeType(type: string): void;
+        /** Removes all previously registered node's types. */
+        clearRegisteredTypes(): void;
+        /**
+         * Create a new node type by passing a function, it wraps it with a proper class and generates inputs according to the parameters of the function.
+         * Useful to wrap simple methods that do not require properties, and that only process some input to generate an output.
+         * @param name node name with namespace (p.e.: 'math/sum')
+         * @param func
+         * @param param_types an array containing the type of every parameter, otherwise parameters will accept any type
+         * @param return_type string with the return type, otherwise it will be generic
+         * @param properties properties to be configurable
+         */
+        wrapFunctionAsNode(
+            name: string,
+            func: (...args: any[]) => any,
+            param_types?: string[],
+            return_type?: string,
+            properties?: object
+        ): void;
+
+        /**
+         * Adds this method to all node types, existing and to be created
+         * (You can add it to LGraphNode.prototype but then existing node types wont have it)
+         */
+        addNodeMethod(name: string, func: (...args: any[]) => any): void;
+
+        /**
+         * Create a node of a given type with a name. The node is not attached to any graph yet.
+         * @param type full name of the node class. p.e. "math/sin"
+         * @param name a name to distinguish from other nodes
+         * @param options to set options
+         */
+        createNode<T extends LGraphNode>(
+            type: string,
+            title: string,
+            options: object
+        ): T;
+
+        /**
+         * Returns a registered node type with a given name
+         * @param type full name of the node class. p.e. "math/sin"
+         */
+        getNodeType<T extends LGraphNode>(type: string): LGraphNodeConstructor<T>;
+
+        /**
+         * Returns a list of node types matching one category
+         * @method getNodeTypesInCategory
+         * @param {String} category category name
+         * @param {String} filter only nodes with ctor.filter equal can be shown
+         * @return {Array} array with all the node classes
+         */
+        getNodeTypesInCategory(
+            category: string,
+            filter: string
+        ): LGraphNodeConstructor[];
+
+        /**
+         * Returns a list with all the node type categories
+         * @method getNodeTypesCategories
+         * @param {String} filter only nodes with ctor.filter equal can be shown
+         * @return {Array} array with all the names of the categories
+         */
+        getNodeTypesCategories(filter: string): string[];
+
+        /** debug purposes: reloads all the js scripts that matches a wildcard */
+        reloadNodes(folder_wildcard: string): void;
+
+        getTime(): number;
+        LLink: typeof LLink;
+        LGraph: typeof LGraph;
+        DragAndScale: typeof DragAndScale;
+        compareObjects(a: object, b: object): boolean;
+        distance(a: Vector2, b: Vector2): number;
+        colorToString(c: string): string;
+        isInsideRectangle(
+            x: number,
+            y: number,
+            left: number,
+            top: number,
+            width: number,
+            height: number
+        ): boolean;
+        growBounding(bounding: Vector4, x: number, y: number): Vector4;
+        isInsideBounding(p: Vector2, bb: Vector4): boolean;
+        hex2num(hex: string): [number, number, number];
+        num2hex(triplet: [number, number, number]): string;
+        ContextMenu: typeof ContextMenu;
+        extendClass<A, B>(target: A, origin: B): A & B;
+        getParameterNames(func: string): string[];
+    };
+}
