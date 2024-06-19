@@ -18,9 +18,9 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/daniel-lewis-ab/litegraph.js.git"
+        "url": "git+https://github.com/huchenlei/litegraph.js.git"
     },
-    "author": "Daniel Lewis",
+    "author": "huchenlei",
     "license": "MIT",
     "files": [
         "build",
@@ -28,9 +28,9 @@
         "src/litegraph.d.ts"
     ],
     "bugs": {
-        "url": "https://github.com/daniel-lewis-ab/litegraph.js/issues"
+        "url": "https://github.com/huchenlei/litegraph.js/issues"
     },
-    "homepage": "https://github.com/daniel-lewis-ab/litegraph.js#readme",
+    "homepage": "https://github.com/huchenlei/litegraph.js#readme",
     "devDependencies": {
         "@stylistic/eslint-plugin": "^2.1.0",
         "@types/jest": "^28.1.3",
