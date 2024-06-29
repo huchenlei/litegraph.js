@@ -6,6 +6,9 @@ temp/*
 coverage/
 coverage/*
 
+# PNPM
+pnpm-lock.yaml
+
 # Editors
 /.vscode/*
 !/.vscode/extensions.json
