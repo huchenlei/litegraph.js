@@ -41,6 +41,7 @@
         "jsdoc": "^4.0.3",
         "jsdom": "^17.0.0",
         "nodemon": "^3.1.0",
+        "typescript": "^5.5.2",
         "uglify-js": "^3.0.0"
     },
     "keywords": [
